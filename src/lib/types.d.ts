@@ -11,3 +11,19 @@ export interface GeneratedImage {
     mediaType: string;
     uint8ArrayData: Uint8Array;
 }
+
+interface ConversationHistory {
+    role: "user" | "assistant";
+    content: string;
+}
+
+export interface GenerateHistoryRequest {
+    userMessage: string;
+    conversationHistory: ConversationHistory[];
+    isStart: boolean;
+}
+
+export interface GenerateHistoryResponse {
+    story: string;
+    imageDescription: string;
+}
