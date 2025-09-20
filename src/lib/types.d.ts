@@ -17,6 +17,10 @@ interface ConversationHistory {
     content: string;
 }
 
+export interface GenerateImageRequest {
+    imagePrompt: string;
+}
+
 export interface GenerateHistoryRequest {
     userMessage: string;
     conversationHistory: ConversationHistory[];
