@@ -2,7 +2,7 @@ export interface GameMessage {
     id: string;
     role: "user" | "assistant";
     content: string;
-    image?: string;
+    image?: GeneratedImage;
     imageLoading?: boolean;
 }
 
