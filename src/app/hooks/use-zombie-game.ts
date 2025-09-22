@@ -17,6 +17,9 @@ export function useZombieGame() {
     try {
       const response = await fetch("/api/generate-story", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ isStart: true }),
       });
 
@@ -49,6 +52,9 @@ export function useZombieGame() {
     try {
       const response = await fetch("/api/generate-image", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ description }),
       });
 
@@ -84,33 +90,43 @@ export function useZombieGame() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (
+    data: { text?: string; files?: unknown[] },
+    e?: React.FormEvent<HTMLFormElement>,
+  ) => {
+    if (e) {
+      e.preventDefault();
+    }
 
-    if (!input.trim() || isLoading) return;
-
-    const messageid = crypto.randomUUID();
+    const userInput = data.text?.trim();
+    if (!userInput || isLoading) return;
 
     const userMessage: GameMessage = {
-      id: messageid,
+      id: crypto.randomUUID(),
       role: "user",
-      content: input,
+      content: userInput,
     };
 
+    const newMessages = [...messages, userMessage];
+
     setIsLoading(true);
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    setMessages(newMessages);
     setInput("");
 
     try {
       const response = await fetch("/api/generate-story", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          userMessage: input,
-          history: messages,
+          userMessage: userInput,
+          conversationHistory: newMessages,
           isStart: false,
         }),
       });
 
+      console.log({ response });
       if (!response.ok) {
         throw new Error("Failed to generate story");
       }

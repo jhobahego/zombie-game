@@ -9,7 +9,10 @@ interface GameInputProps {
   input: string;
   isLoading: boolean;
   onInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (
+    data: { text?: string; files?: unknown[] },
+    e?: React.FormEvent<HTMLFormElement>,
+  ) => void;
 }
 
 export function GameInput({
