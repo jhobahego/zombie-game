@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Loader2, Volume2, VolumeX, Square, Play } from "lucide-react";
+import { Loader2, Volume2, VolumeX, Square } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AudioControlsProps {
@@ -27,7 +27,7 @@ export function AudioControls({
     <div
       className={cn(
         "flex items-center gap-2 bg-background/80 backdrop-blur-sm border rounded-full px-3 py-1.5 shadow-sm transition-all animate-in fade-in slide-in-from-bottom-2",
-        className
+        className,
       )}
     >
       <div className="flex items-center gap-2 mr-2">
