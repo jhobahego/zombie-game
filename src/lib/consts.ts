@@ -24,7 +24,7 @@ export const GAME_CONFIG = {
     AUTO_PLAY: true,
     // Voces disponibles
     // Male Voices: "es-ES-Chirp3-HD-Algenib", "es-ES-Chirp-HD-D"
-    // Female Voices: "es-ES-Chirp-HD-F"
-    VOICE: "es-ES-Chirp-HD-F",
+    // Female Voices: "es-ES-Chirp-HD-F", "es-ES-Chirp3-HD-Zephyr"
+    VOICE: "es-ES-Chirp3-HD-Zephyr",
   },
 };
