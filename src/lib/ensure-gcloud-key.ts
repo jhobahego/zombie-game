@@ -21,6 +21,14 @@ export function ensureGCloudKeyOnFs() {
     }
   }
 
+  // Validate JSON early to fail fast with a clear error
+  try {
+    JSON.parse(content);
+  } catch (error) {
+    console.error("Invalid GOOGLE_CREDENTIALS/GOOGLE_CREDENTIALS_BASE64 JSON");
+    throw error;
+  }
+
   const tmpDir = process.env.TMPDIR || "/tmp";
   const tmpPath = path.join(tmpDir, "gcloud-key.json");
 
