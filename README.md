@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Zombie Game (Next.js App Router)
 
-## Getting Started
+App de historia interactiva con generación de texto, imágenes y audio (Gemini + Google TTS).
 
-First, run the development server:
+## Requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node 20+ y pnpm
+- Variables de entorno (no se versionan):
+  - `GOOGLE_CREDENTIALS` (JSON completo de la cuenta de servicio) **o** `GOOGLE_CREDENTIALS_BASE64` (mismo JSON en base64)
+  - `GEMINI_API_KEY`
+  - Opcional: `GOOGLE_API_KEY` si usas otros endpoints de Google
+
+Ejemplo de `.env.local` (no lo subas al repo):
+
+```env
+GOOGLE_CREDENTIALS='{"type":"service_account",...}'
+GEMINI_API_KEY=tu_api_key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Desarrollo local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+pnpm dev
+# abre http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Despliegue en Vercel (CLI)
 
-## Learn More
+1) Inicia sesión: `vercel login`
+2) Añade la credencial como variable segura (pega el JSON completo o en base64):
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+vercel env add GOOGLE_CREDENTIALS production
+vercel env add GOOGLE_CREDENTIALS preview
+vercel env add GOOGLE_CREDENTIALS development
+# si usas base64: vercel env add GOOGLE_CREDENTIALS_BASE64 production
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3) Despliega:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+vercel --prod
+```
 
-## Deploy on Vercel
+Notas de seguridad:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- No comitees el archivo JSON ni `.env*`.
+- Si la clave se expuso, rota la llave en IAM y vuelve a subir la nueva a Vercel.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Rutas y credenciales
+
+- Las rutas API usan runtime Node (`runtime = "nodejs"`).
+- Antes de crear el cliente de Google TTS se escribe el JSON de la cuenta de servicio en `/tmp/gcloud-key.json` y se exporta `GOOGLE_APPLICATION_CREDENTIALS` automáticamente (helper `src/lib/ensure-gcloud-key.ts`).
+
+## Scripts útiles
+
+- `pnpm lint` – Biome
+- `pnpm build` – build de producción
+- `pnpm dev` – modo desarrollo
